@@ -3,7 +3,6 @@ import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
-
 from deep_translator import GoogleTranslator
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -12,35 +11,38 @@ logging.basicConfig(level=logging.INFO)
 
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("✅ Το bot λειτουργεί! Κάνε post στο κανάλι για να δοκιμάσεις.")
+    await update.message.reply_text("✅ Το bot είναι έτοιμο!")
 
-# Όταν γίνεται νέο post στο κανάλι
+# Όταν ποστάρεις κάτι στο κανάλι, απλά προσθέτει κουμπί "Translate" χωρίς να επαναλαμβάνει το μήνυμα
 async def handle_channel_post(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.channel_post.text
     if not text:
         return
 
-    keyboard = [[InlineKeyboardButton("🌍 Translate to English", callback_data=text)]]
+    keyboard = [[InlineKeyboardButton("🌍 Translate to English", callback_data=f"translate|{text}")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await context.bot.send_message(
-        chat_id=update.channel_post.chat_id,
-        text=text,
-        reply_markup=reply_markup,
-        reply_to_message_id=update.channel_post.message_id
-    )
+    await update.channel_post.reply_text(" ", reply_markup=reply_markup)
 
-# Όταν πατηθεί το κουμπί μετάφρασης
+# Όταν ο χρήστης πατήσει το κουμπί, λαμβάνει τη μετάφραση ΙΔΙΩΤΙΚΑ
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    original_text = query.data
-    translated = GoogleTranslator(source='auto', target='en').translate(original_text)
+    data = query.data
+    if data.startswith("translate|"):
+        original_text = data.split("|", 1)[1]
+        translated = GoogleTranslator(source='auto', target='en').translate(original_text)
 
-    await query.message.reply_text(f"🇬🇧 {translated}")
+        try:
+            await context.bot.send_message(
+                chat_id=query.from_user.id,
+                text=f"🇬🇧 Translation:
+{translated}"
+            )
+        except:
+            await query.message.reply_text("❌ Δεν μπορώ να σου στείλω ιδιωτικά μήνυμα. Ξεκίνα το bot πρώτα με /start.")
 
-# Εκκίνηση του bot
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
 
