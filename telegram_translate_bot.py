@@ -30,7 +30,7 @@ async def handle_channel_post(update: Update, context: ContextTypes.DEFAULT_TYPE
     # Απαντά χωρίς κείμενο — μόνο κουμπί
     await context.bot.send_message(
     chat_id=update.channel_post.chat_id,
-    text="🔹",
+    text="English Translation",
     reply_markup=reply_markup
     )
 
