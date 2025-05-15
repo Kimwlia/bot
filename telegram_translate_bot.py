@@ -41,8 +41,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             await context.bot.send_message(
                 chat_id=query.from_user.id,
-                text=f"🇬🇧 Translation:
-{translated}"
+                text = f"🇬🇧 Translation:\n{translated}"
             )
         except:
             await query.message.reply_text("❌ Δεν μπορώ να σου στείλω ιδιωτικά μήνυμα. Ξεκίνα το bot πρώτα με /start.")
