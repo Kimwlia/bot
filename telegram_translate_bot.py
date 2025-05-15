@@ -28,7 +28,12 @@ async def handle_channel_post(update: Update, context: ContextTypes.DEFAULT_TYPE
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Απαντά χωρίς κείμενο — μόνο κουμπί
-    await update.channel_post.reply_text(".", reply_markup=reply_markup)
+    await context.bot.send_message(
+    chat_id=update.channel_post.chat_id,
+    text="🔹",
+    reply_markup=reply_markup
+    )
+
 
 # Όταν πατηθεί το κουμπί
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
