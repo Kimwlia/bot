@@ -52,7 +52,7 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     try:
         await query.answer()
     except Exception:
-        pass  # avoid "query is too old" crash
+        pass
 
     fields = get_airtable_record("Germany")
     intro_photo = fields.get("intro_photo", [None])[0]['url'] if "intro_photo" in fields else None
@@ -84,14 +84,15 @@ async def activate_ai_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     else:
         await query.message.reply_text(text, reply_markup=reply_markup, parse_mode="HTML")
 
-# Επιλογή χώρας
+# Επιλογή χώρας (2 ανά σειρά)
 async def connect_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
     countries = [
-        ("🇩🇪 Germany", "Germany"),
+        ("🇬🇷 Greece", "Greece"),
         ("🇦🇱 Albania", "Albania"),
+        ("🇩🇪 Germany", "Germany"),
         ("🇬🇧 United Kingdom", "United Kingdom"),
         ("🇪🇸 Spain", "Spain"),
         ("🇮🇹 Italy", "Italy"),
@@ -106,9 +107,19 @@ async def connect_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ("🇳🇱 Netherlands", "Netherlands")
     ]
 
-    keyboard = [[InlineKeyboardButton(label, callback_data=f"scan_{value}")] for label, value in countries]
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    keyboard = [
+        [
+            InlineKeyboardButton(countries[i][0], callback_data=f"scan_{countries[i][1]}"),
+            InlineKeyboardButton(countries[i+1][0], callback_data=f"scan_{countries[i+1][1]}")
+        ]
+        for i in range(0, len(countries) - 1, 2)
+    ]
+    if len(countries) % 2 == 1:
+        keyboard.append([
+            InlineKeyboardButton(countries[-1][0], callback_data=f"scan_{countries[-1][1]}")
+        ])
 
+    reply_markup = InlineKeyboardMarkup(keyboard)
     await query.message.reply_text("🌍 <b>SELECT COUNTRY TO SCAN:</b>", reply_markup=reply_markup, parse_mode="HTML")
 
 # Σκανάρισμα
