@@ -1,2 +1,4 @@
-python-telegram-bot==20.3
-deep-translator==1.11.4
+python-telegram-bot==20.8
+requests
+python-dotenv
+telegram
