@@ -55,7 +55,7 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
         pass
 
     fields = get_airtable_record("Germany")
-    intro_photo = fields.get("intro_photo", [None])[0]['url'] if "intro_photo" in fields else None
+    after_start_photo = fields.get("after_start_photo", [None])[0]['url'] if "after_start_photo" in fields else None
 
     keyboard = [[
         InlineKeyboardButton("📢 Join Main Group", url="https://t.me/+Idg13sBc6IthNmFk"),
@@ -63,8 +63,8 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    if intro_photo:
-        await query.message.reply_photo(photo=intro_photo, caption=".", reply_markup=reply_markup, parse_mode="HTML")
+    if after_start_photo:
+        await query.message.reply_photo(photo=after_start_photo, caption=".", reply_markup=reply_markup, parse_mode="HTML")
     else:
         await query.message.reply_text("👇 Choose an option below:", reply_markup=reply_markup, parse_mode="HTML")
 
