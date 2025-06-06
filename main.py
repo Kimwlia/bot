@@ -58,8 +58,8 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     after_start_photo = fields.get("after_start_photo", [None])[0]['url'] if "after_start_photo" in fields else None
 
     keyboard = [[
-        InlineKeyboardButton("📢 Join Main Group", url="https://t.me/+Idg13sBc6IthNmFk"),
-        InlineKeyboardButton("🤖 Start AI Bot", callback_data="activate_ai")
+        InlineKeyboardButton("📢 Μπες στο κανάλι μας", url="https://t.me/+Idg13sBc6IthNmFk"),
+        InlineKeyboardButton("🤖 Ξεκίνα το AI Bot", callback_data="activate_ai")
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -76,7 +76,7 @@ async def activate_ai_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     photo = fields.get("after_start_photo", [None])[0]['url'] if "after_start_photo" in fields else None
     text = fields.get("main_text", "Here's your feed for today.")
 
-    keyboard = [[InlineKeyboardButton("🔗 CONNECT", callback_data="connect")]]
+    keyboard = [[InlineKeyboardButton("🔗 ΞΕΚΙΝΑ", callback_data="connect")]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     if photo:
