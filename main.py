@@ -66,14 +66,14 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if after_start_photo:
         await query.message.reply_photo(photo=after_start_photo, caption=".", reply_markup=reply_markup, parse_mode="HTML")
     else:
-        await query.message.reply_text("👇 Choose an option below:", reply_markup=reply_markup, parse_mode="HTML")
+        await query.message.reply_text("👇Διάλεξε πως θες να προχωρήσεις!", reply_markup=reply_markup, parse_mode="HTML")
 
 # Ξεκινάει το AI Bot
 async def activate_ai_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     fields = get_airtable_record("Germany")
-    photo = fields.get("Photo", [None])[0]['url'] if "Photo" in fields else None
+    photo = fields.get("after_start_photo", [None])[0]['url'] if "after_start_photo" in fields else None
     text = fields.get("main_text", "Here's your feed for today.")
 
     keyboard = [[InlineKeyboardButton("🔗 CONNECT", callback_data="connect")]]
