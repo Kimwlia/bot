@@ -55,16 +55,16 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
         pass
 
     fields = get_airtable_record("Germany")
-    after_start_photo = fields.get("after_start_photo", [None])[0]['url'] if "after_start_photo" in fields else None
+    intro_photo = fields.get("intro_photo", [None])[0]['url'] if "intro_photo" in fields else None
 
     keyboard = [[
-        InlineKeyboardButton("📢 Μπες στο κανάλι μας", url="https://t.me/+Idg13sBc6IthNmFk"),
-        InlineKeyboardButton("🤖 Ξεκίνα το AI Bot", callback_data="activate_ai")
+        InlineKeyboardButton("📢 Μπες στο κανάλι", url="https://t.me/+Idg13sBc6IthNmFk"),
+        InlineKeyboardButton("🤖 Ξεκίνα Bot", callback_data="activate_ai")
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    if after_start_photo:
-        await query.message.reply_photo(photo=after_start_photo, caption=".", reply_markup=reply_markup, parse_mode="HTML")
+    if intro_photo:
+        await query.message.reply_photo(photo=intro_photo, caption=".", reply_markup=reply_markup, parse_mode="HTML")
     else:
         await query.message.reply_text("👇Διάλεξε πως θες να προχωρήσεις!", reply_markup=reply_markup, parse_mode="HTML")
 
