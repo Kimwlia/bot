@@ -58,7 +58,7 @@ async def start_bot_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     intro_photo = fields.get("intro_photo", [None])[0]['url'] if "intro_photo" in fields else None
 
     keyboard = [[
-        InlineKeyboardButton("📢 Μπες στο κανάλι", url="https://t.me/+Idg13sBc6IthNmFk"),
+        InlineKeyboardButton("📢 Μπες στο κανάλι", url="https://t.me/+suWunc6W_KMzMjQ0"),
         InlineKeyboardButton("🤖 Ξεκίνα Bot", callback_data="activate_ai")
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
